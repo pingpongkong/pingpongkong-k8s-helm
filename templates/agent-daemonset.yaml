@@ -1,23 +1,40 @@
+{{- $name := default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- $fullname := "" -}}
+{{- if .Values.fullnameOverride -}}
+{{- $fullname = .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else if contains $name .Release.Name -}}
+{{- $fullname = .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $fullname = printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "ppk.fullname" . }}-agent
+  name: {{ $fullname }}-agent
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "ppk.labels" . | nindent 4 }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: agent
 spec:
   selector:
     matchLabels:
-      {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "agent") | nindent 6 }}
+      app.kubernetes.io/name: {{ $name }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: agent
   template:
     metadata:
       labels:
-        {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "agent") | nindent 8 }}
+        app.kubernetes.io/name: {{ $name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: agent
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      serviceAccountName: {{ include "ppk.fullname" . }}-agent
+      serviceAccountName: {{ $fullname }}-agent
       tolerations:
         - operator: "Exists"
       containers:
@@ -29,6 +46,6 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: COLLECTOR_URL
-              value: "http://{{ include "ppk.fullname" . }}-collector.{{ .Release.Namespace }}.svc.cluster.local:8080/matrix"
+              value: "http://{{ $fullname }}-collector.{{ .Release.Namespace }}.svc.cluster.local:8080/matrix"
           resources:
             {{- toYaml .Values.agent.resources | nindent 12 }}

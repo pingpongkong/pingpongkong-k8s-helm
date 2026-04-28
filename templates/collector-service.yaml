@@ -1,15 +1,30 @@
+{{- $name := default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- $fullname := "" -}}
+{{- if .Values.fullnameOverride -}}
+{{- $fullname = .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else if contains $name .Release.Name -}}
+{{- $fullname = .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $fullname = printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ppk.fullname" . }}-collector
+  name: {{ $fullname }}-collector
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "ppk.labels" . | nindent 4 }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: collector
 spec:
   type: ClusterIP
   selector:
-    {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "collector") | nindent 4 }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: collector
   ports:
     - name: http
       port: 8080
