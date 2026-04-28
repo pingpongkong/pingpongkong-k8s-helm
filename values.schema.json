@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "pingpongkong Helm values",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["clusterName", "repoApiUrl", "auth", "collector", "agent"],
+  "properties": {
+    "nameOverride": {
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "type": "string"
+    },
+    "clusterName": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "description": "Cluster file stem used to read k8s/{{ clusterName }}.yaml from pingpongkong-state."
+    },
+    "repoApiUrl": {
+      "type": "string",
+      "format": "uri",
+      "minLength": 1,
+      "description": "Repository files API base URL used by the collector."
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gitToken"],
+      "properties": {
+        "gitToken": {
+          "type": "string",
+          "description": "Git token rendered only into the collector Secret."
+        }
+      }
+    },
+    "collector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["image", "resources"],
+      "properties": {
+        "image": { "$ref": "#/definitions/image" },
+        "resources": { "$ref": "#/definitions/resources" }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["image", "resources"],
+      "properties": {
+        "image": { "$ref": "#/definitions/image" },
+        "resources": { "$ref": "#/definitions/resources" }
+      }
+    }
+  },
+  "definitions": {
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "tag"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "requests": { "$ref": "#/definitions/resourceList" },
+        "limits": { "$ref": "#/definitions/resourceList" }
+      }
+    },
+    "resourceList": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number"]
+      }
+    },
+    "k8sState": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["nodes"],
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "notification": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "discord": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

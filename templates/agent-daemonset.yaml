@@ -1,35 +1,34 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ .Release.Name }}-agent
+  name: {{ include "ppk.fullname" . }}-agent
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ppk.labels" . | nindent 4 }}
+    app.kubernetes.io/component: agent
 spec:
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-agent
+      {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "agent") | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-agent
+        {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "agent") | nindent 8 }}
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      serviceAccountName: {{ .Release.Name }}-agent-sa
+      serviceAccountName: {{ include "ppk.fullname" . }}-agent
       tolerations:
         - operator: "Exists"
       containers:
         - name: agent
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
-          ports:
-            - containerPort: 8080
-              hostPort: 8080
           env:
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
-            # Magically route to the Collector service
             - name: COLLECTOR_URL
-              value: "http://{{ .Release.Name }}-collector.{{ .Release.Namespace }}.svc.cluster.local:8080/matrix"
+              value: "http://{{ include "ppk.fullname" . }}-collector.{{ .Release.Namespace }}.svc.cluster.local:8080/matrix"
           resources:
             {{- toYaml .Values.agent.resources | nindent 12 }}

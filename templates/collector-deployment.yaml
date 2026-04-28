@@ -1,17 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-collector
+  name: {{ include "ppk.fullname" . }}-collector
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ppk.labels" . | nindent 4 }}
+    app.kubernetes.io/component: collector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-collector
+      {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "collector") | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-collector
+        {{- include "ppk.selectorLabels" (dict "Chart" .Chart "Release" .Release "Values" .Values "component" "collector") | nindent 8 }}
     spec:
       containers:
         - name: collector
@@ -20,13 +23,21 @@ spec:
             - containerPort: 8080
           env:
             - name: REPO_API_URL
-              value: {{ .Values.collector.repoApiUrl | quote }}
+              value: {{ .Values.repoApiUrl | quote }}
             - name: CLUSTER_NAME
-              value: {{ .Values.collector.clusterName | quote }}
+              value: {{ .Values.clusterName | quote }}
+            - name: K8S_MATRIX_PATH
+              value: {{ printf "k8s/%s.yaml" .Values.clusterName | quote }}
+            - name: K8S_DEFAULT_MATRIX_PATH
+              value: "k8s/default.yaml"
+            - name: NOTIFICATION_PATH
+              value: "notification/discord.yaml"
+            - name: MATRIX_ENDPOINT
+              value: "/matrix"
             - name: GIT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-auth
+                  name: {{ include "ppk.fullname" . }}-auth
                   key: git-token
           resources:
             {{- toYaml .Values.collector.resources | nindent 12 }}

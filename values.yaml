@@ -1,4 +1,11 @@
-# --- Collector Settings ---
+# pingpongkong-state repository API. The collector reads:
+# - k8s/{{ .Values.clusterName }}.yaml
+# - notification/discord.yaml
+# If the cluster-specific k8s file returns 404, the collector falls back to
+# k8s/default.yaml.
+clusterName: "sample-cluster"
+repoApiUrl: "https://gitlab.company.com/api/v4/projects/123/repository/files"
+
 collector:
   image:
     repository: your-registry/pingpongkong-k8s-collector
@@ -10,11 +17,6 @@ collector:
     limits:
       cpu: 200m
       memory: 128Mi
-  
-  # The URL to your raw matrix.yaml
-  stateRepoUrl: "https://gitlab.your-company.com/api/v4/projects/123/repository/files/k8s%2Fsample-k8s-cluster.yaml/raw?ref=main"
-  repoApiUrl: "https://gitlab.company.com/api/v4/projects/123/repository/files"
-  clusterName: "sample-cluster"
 
 # --- Agent Settings ---
 agent:
