@@ -1,0 +1,35 @@
+# --- Collector Settings ---
+collector:
+  image:
+    repository: your-registry/pingpongkong-k8s-collector
+    tag: latest
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  
+  # The URL to your raw matrix.yaml
+  stateRepoUrl: "https://gitlab.your-company.com/api/v4/projects/123/repository/files/k8s%2Fsample-k8s-cluster.yaml/raw?ref=main"
+  repoApiUrl: "https://gitlab.company.com/api/v4/projects/123/repository/files"
+  clusterName: "sample-cluster"
+
+# --- Agent Settings ---
+agent:
+  image:
+    repository: your-registry/pingpongkong-k8s-agent
+    tag: latest
+  resources:
+    requests:
+      cpu: 10m
+      memory: 20Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
+# --- Authentication ---
+# DO NOT commit your actual token here! Pass it via CLI during installation.
+auth:
+  gitToken: ""

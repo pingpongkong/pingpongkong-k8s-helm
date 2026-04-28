@@ -1,0 +1,6 @@
+apiVersion: v2
+name: pingpongkong
+description: A high-performance, Rust-powered network drift detection agent.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-collector
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-collector
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-collector
+    spec:
+      containers:
+        - name: collector
+          image: "{{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: REPO_API_URL
+              value: {{ .Values.collector.repoApiUrl | quote }}
+            - name: CLUSTER_NAME
+              value: {{ .Values.collector.clusterName | quote }}
+            - name: GIT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-auth
+                  key: git-token
+          resources:
+            {{- toYaml .Values.collector.resources | nindent 12 }}
