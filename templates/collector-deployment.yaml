@@ -39,19 +39,11 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: REPO_API_URL
-              value: {{ .Values.repoApiUrl | quote }}
-            - name: CLUSTER_NAME
-              value: {{ .Values.clusterName | quote }}
-            - name: K8S_MATRIX_PATH
-              value: {{ printf "k8s/%s.yaml" .Values.clusterName | quote }}
-            - name: K8S_DEFAULT_MATRIX_PATH
-              value: "k8s/default.yaml"
-            - name: NOTIFICATION_PATH
-              value: "notification/discord.yaml"
-            - name: MATRIX_ENDPOINT
-              value: "/matrix"
-            - name: GIT_TOKEN
+            - name: CONFIG_GIT_URL
+              value: {{ .Values.CONFIG_GIT_URL | quote }}
+            - name: CONFIG_GIT_CLUSTERNAME
+              value: {{ .Values.CONFIG_GIT_CLUSTERNAME | quote }}
+            - name: CONFIG_GIT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ $fullname }}-auth

@@ -1,15 +1,15 @@
-# pingpongkong-state repository API. The collector reads:
-# - k8s/{{ .Values.clusterName }}.yaml
+# pingpongkong-state Git repository. The collector reads:
+# - k8s/{{ .Values.CONFIG_GIT_CLUSTERNAME }}.yaml
 # - notification/discord.yaml
-# If the cluster-specific k8s file returns 404, the collector falls back to
-# k8s/default.yaml.
-clusterName: "sample-cluster"
-repoApiUrl: "https://gitlab.company.com/api/v4/projects/123/repository/files"
+# and derives provider-specific raw file URLs from the repository HEAD/default branch.
+CONFIG_GIT_URL: "https://gitlab.company.com/group/pingpongkong-state"
+CONFIG_GIT_CLUSTERNAME: "sample-cluster"
+CONFIG_GIT_TOKEN: ""
 
 collector:
   image:
     repository: kimc1992/pingpongkong-k8s-collector
-    tag: v0.0.1
+    tag: v0.0.3
   resources:
     requests:
       cpu: 50m
@@ -30,8 +30,3 @@ agent:
     limits:
       cpu: 100m
       memory: 64Mi
-
-# --- Authentication ---
-# DO NOT commit your actual token here! Pass it via CLI during installation.
-auth:
-  gitToken: ""

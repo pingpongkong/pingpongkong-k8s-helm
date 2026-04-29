@@ -3,7 +3,7 @@
   "title": "pingpongkong Helm values",
   "type": "object",
   "additionalProperties": false,
-  "required": ["clusterName", "repoApiUrl", "auth", "collector", "agent"],
+  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_CLUSTERNAME", "CONFIG_GIT_TOKEN", "collector", "agent"],
   "properties": {
     "nameOverride": {
       "type": "string"
@@ -11,28 +11,21 @@
     "fullnameOverride": {
       "type": "string"
     },
-    "clusterName": {
+    "CONFIG_GIT_CLUSTERNAME": {
       "type": "string",
       "minLength": 1,
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
-      "description": "Cluster file stem used to read k8s/{{ clusterName }}.yaml from pingpongkong-state."
+      "description": "Cluster file stem used to read k8s/{{ CONFIG_GIT_CLUSTERNAME }}.yaml from pingpongkong-state."
     },
-    "repoApiUrl": {
+    "CONFIG_GIT_URL": {
       "type": "string",
       "format": "uri",
       "minLength": 1,
-      "description": "Repository files API base URL used by the collector."
+      "description": "Plain Git repository URL used by the collector."
     },
-    "auth": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["gitToken"],
-      "properties": {
-        "gitToken": {
-          "type": "string",
-          "description": "Git token rendered only into the collector Secret."
-        }
-      }
+    "CONFIG_GIT_TOKEN": {
+      "type": "string",
+      "description": "Git token rendered only into the collector Secret."
     },
     "collector": {
       "type": "object",
