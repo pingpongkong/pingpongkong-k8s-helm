@@ -27,7 +27,7 @@ collector:
 agent:
   image:
     repository: kimc1992/pingpongkong-k8s-agent
-    tag: v0.0.10
+    tag: v0.0.12
   resources:
     requests:
       cpu: 10m

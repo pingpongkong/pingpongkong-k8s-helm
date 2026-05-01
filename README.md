@@ -4,7 +4,7 @@
 ```bash
 helm lint .
 helm package .
-helm push pingpongkong-0.0.15.tgz \
+helm push pingpongkong-0.0.16.tgz \
   oci://registry-1.docker.io/kimc1992
 ```
 
