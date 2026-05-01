@@ -5,11 +5,22 @@
 CONFIG_GIT_URL: "https://gitlab.company.com/group/pingpongkong-state"
 CONFIG_GIT_CLUSTERNAME: "sample-cluster"
 CONFIG_GIT_TOKEN: ""
+logLevel: INFO
+
+matrixConfigMap:
+  create: true
+  namespace: default
+  name: pingpongkong-matrix
+  key: matrix.yaml
+  data: |
+    nodes: []
 
 collector:
+  updateInterval: 5m
+  apiPort: 8081
   image:
     repository: kimc1992/pingpongkong-k8s-collector
-    tag: v0.0.3
+    tag: v0.0.4
   resources:
     requests:
       cpu: 50m
@@ -20,6 +31,8 @@ collector:
 
 # --- Agent Settings ---
 agent:
+  checkInterval: 5m
+  apiPort: 8080
   image:
     repository: kimc1992/pingpongkong-k8s-agent
     tag: v0.0.1

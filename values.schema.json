@@ -3,7 +3,7 @@
   "title": "pingpongkong Helm values",
   "type": "object",
   "additionalProperties": false,
-  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_CLUSTERNAME", "CONFIG_GIT_TOKEN", "collector", "agent"],
+  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_CLUSTERNAME", "CONFIG_GIT_TOKEN", "logLevel", "matrixConfigMap", "collector", "agent"],
   "properties": {
     "nameOverride": {
       "type": "string"
@@ -27,11 +27,48 @@
       "type": "string",
       "description": "Git token rendered only into the collector Secret."
     },
+    "logLevel": {
+      "type": "string",
+      "enum": ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"],
+      "description": "Log level used by the collector and agent."
+    },
+    "matrixConfigMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["create", "namespace", "name", "key", "data"],
+      "properties": {
+        "create": {
+          "type": "boolean",
+          "description": "Create the ConfigMap watched by the agent."
+        },
+        "namespace": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Namespace containing the matrix ConfigMap."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the matrix ConfigMap."
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Data key containing the matrix YAML."
+        },
+        "data": {
+          "type": "string",
+          "description": "Initial matrix YAML content."
+        }
+      }
+    },
     "collector": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["image", "resources"],
+      "required": ["updateInterval", "apiPort", "image", "resources"],
       "properties": {
+        "updateInterval": { "$ref": "#/definitions/duration" },
+        "apiPort": { "$ref": "#/definitions/port" },
         "image": { "$ref": "#/definitions/image" },
         "resources": { "$ref": "#/definitions/resources" }
       }
@@ -39,14 +76,27 @@
     "agent": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["image", "resources"],
+      "required": ["checkInterval", "apiPort", "image", "resources"],
       "properties": {
+        "checkInterval": { "$ref": "#/definitions/duration" },
+        "apiPort": { "$ref": "#/definitions/port" },
         "image": { "$ref": "#/definitions/image" },
         "resources": { "$ref": "#/definitions/resources" }
       }
     }
   },
   "definitions": {
+    "duration": {
+      "type": "string",
+      "pattern": "^[0-9]+(ms|s|m|h)$",
+      "description": "Duration string such as 30s, 5m, or 1h."
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "description": "TCP port number."
+    },
     "image": {
       "type": "object",
       "additionalProperties": false,
