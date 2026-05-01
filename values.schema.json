@@ -3,7 +3,7 @@
   "title": "pingpongkong Helm values",
   "type": "object",
   "additionalProperties": false,
-  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_TOKEN", "K8S_CLUSTERNAME", "LOG_LEVEL", "COLLECTOR_UPDATE_INTERVAL", "AGENT_CHECK_INTERVAL", "AGENT_API_PORT", "COLLECTOR_API_PORT", "matrixConfigMap", "collector", "agent"],
+  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_TOKEN", "CONFIG_GIT_CLUSTERNAME", "LOG_LEVEL", "COLLECTOR_UPDATE_INTERVAL", "AGENT_CHECK_INTERVAL", "AGENT_API_PORT", "COLLECTOR_API_PORT", "collector", "agent"],
   "properties": {
     "nameOverride": {
       "type": "string"
@@ -11,11 +11,11 @@
     "fullnameOverride": {
       "type": "string"
     },
-    "K8S_CLUSTERNAME": {
+    "CONFIG_GIT_CLUSTERNAME": {
       "type": "string",
       "minLength": 1,
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
-      "description": "Cluster file stem used to read k8s/{{ K8S_CLUSTERNAME }}.yaml from pingpongkong-state and build the ping-state ConfigMap name."
+      "description": "Cluster directory/file stem used to read k8s/{{ CONFIG_GIT_CLUSTERNAME }}.yaml from pingpongkong-state and build the ping-state ConfigMap name."
     },
     "CONFIG_GIT_URL": {
       "type": "string",
@@ -36,26 +36,6 @@
     "AGENT_CHECK_INTERVAL": { "$ref": "#/definitions/duration" },
     "AGENT_API_PORT": { "$ref": "#/definitions/port" },
     "COLLECTOR_API_PORT": { "$ref": "#/definitions/port" },
-    "matrixConfigMap": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["create", "key", "data"],
-      "properties": {
-        "create": {
-          "type": "boolean",
-          "description": "Create the ConfigMap watched by the agent."
-        },
-        "key": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Data key containing the matrix YAML."
-        },
-        "data": {
-          "type": "string",
-          "description": "Initial matrix YAML content."
-        }
-      }
-    },
     "collector": {
       "type": "object",
       "additionalProperties": false,

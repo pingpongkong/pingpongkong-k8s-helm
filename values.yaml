@@ -1,21 +1,15 @@
 # pingpongkong-state Git repository. The collector reads:
-# - k8s/{{ .Values.K8S_CLUSTERNAME }}.yaml
+# - k8s/{{ .Values.CONFIG_GIT_CLUSTERNAME }}.yaml
 # - notification/discord.yaml
 # and derives provider-specific raw file URLs from the repository HEAD/default branch.
 CONFIG_GIT_URL: "https://gitlab.company.com/group/pingpongkong-state"
 CONFIG_GIT_TOKEN: ""
-K8S_CLUSTERNAME: "sample-cluster"
+CONFIG_GIT_CLUSTERNAME: "sample-cluster"
 LOG_LEVEL: INFO
 COLLECTOR_UPDATE_INTERVAL: 5m
 AGENT_CHECK_INTERVAL: 5m
 AGENT_API_PORT: 8080
 COLLECTOR_API_PORT: 8081
-
-matrixConfigMap:
-  create: true
-  key: desiredPingState.yaml
-  data: |
-    nodes: []
 
 collector:
   image:

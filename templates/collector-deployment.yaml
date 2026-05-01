@@ -44,8 +44,8 @@ spec:
               value: {{ .Values.LOG_LEVEL | quote }}
             - name: CONFIG_GIT_URL
               value: {{ .Values.CONFIG_GIT_URL | quote }}
-            - name: K8S_CLUSTERNAME
-              value: {{ .Values.K8S_CLUSTERNAME | quote }}
+            - name: CONFIG_GIT_CLUSTERNAME
+              value: {{ .Values.CONFIG_GIT_CLUSTERNAME | quote }}
             - name: K8S_NAMESPACE
               valueFrom:
                 fieldRef:
