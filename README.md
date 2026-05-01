@@ -4,7 +4,7 @@
 ```bash
 helm lint .
 helm package .
-helm push pingpongkong-0.0.10.tgz \
+helm push pingpongkong-0.0.12.tgz \
   oci://registry-1.docker.io/kimc1992
 ```
 
@@ -59,9 +59,9 @@ helm upgrade --install ppk . \
 
 The collector creates and patches the ping-state ConfigMap in the release
 namespace. The chart grants the agent ServiceAccount permission to get/list/watch
-ConfigMaps, and grants the collector ServiceAccount permission to get/create/patch
-ConfigMaps in that namespace. `K8S_NAMESPACE` is injected from the pod namespace
-by Kubernetes.
+ConfigMaps and get/list/watch Nodes. It grants the collector ServiceAccount
+permission to get/create/patch ConfigMaps in that namespace and get/list/watch
+Nodes. `K8S_NAMESPACE` is injected from the pod namespace by Kubernetes.
 
 ## Runtime settings
 

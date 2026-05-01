@@ -1,0 +1,16 @@
+.git
+.git/
+.git/*
+.gitignore
+.helmignore
+.codex
+
+target
+target/
+node_modules
+node_modules/
+
+*.tar
+*.tgz
+*.log
+.DS_Store

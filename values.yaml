@@ -14,7 +14,7 @@ COLLECTOR_API_PORT: 8081
 collector:
   image:
     repository: kimc1992/pingpongkong-k8s-collector
-    tag: v0.0.10
+    tag: v0.0.12
   resources:
     requests:
       cpu: 50m
@@ -27,7 +27,7 @@ collector:
 agent:
   image:
     repository: kimc1992/pingpongkong-k8s-agent
-    tag: v0.0.9
+    tag: v0.0.10
   resources:
     requests:
       cpu: 10m
