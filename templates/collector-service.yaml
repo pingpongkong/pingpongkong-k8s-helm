@@ -27,6 +27,6 @@ spec:
     app.kubernetes.io/component: collector
   ports:
     - name: http
-      port: {{ .Values.collector.apiPort }}
-      targetPort: {{ .Values.collector.apiPort }}
+      port: {{ .Values.COLLECTOR_API_PORT }}
+      targetPort: {{ .Values.COLLECTOR_API_PORT }}
       protocol: TCP

@@ -41,21 +41,29 @@ spec:
         - name: agent
           image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}"
           ports:
-            - containerPort: {{ .Values.agent.apiPort }}
+            - containerPort: {{ .Values.AGENT_API_PORT }}
               name: http
               protocol: TCP
           env:
             - name: LOG_LEVEL
-              value: {{ .Values.logLevel | quote }}
+              value: {{ .Values.LOG_LEVEL | quote }}
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: K8S_CLUSTERNAME
+              value: {{ .Values.K8S_CLUSTERNAME | quote }}
+            - name: K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: CONFIGMAP_KEY
+              value: {{ .Values.matrixConfigMap.key | quote }}
             - name: COLLECTOR_URL
-              value: "http://{{ $fullname }}-collector.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.collector.apiPort }}/matrix"
+              value: "http://{{ $fullname }}-collector.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.COLLECTOR_API_PORT }}/matrix"
             - name: AGENT_CHECK_INTERVAL
-              value: {{ .Values.agent.checkInterval | quote }}
+              value: {{ .Values.AGENT_CHECK_INTERVAL | quote }}
             - name: AGENT_API_PORT
-              value: {{ .Values.agent.apiPort | quote }}
+              value: {{ .Values.AGENT_API_PORT | quote }}
           resources:
             {{- toYaml .Values.agent.resources | nindent 12 }}
