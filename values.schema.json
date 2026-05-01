@@ -21,7 +21,8 @@
       "type": "string",
       "format": "uri",
       "minLength": 1,
-      "description": "Plain Git repository URL used by the collector."
+      "pattern": "^.+\\.git$",
+      "description": "Plain Git repository URL used by the collector. Must end with .git."
     },
     "CONFIG_GIT_TOKEN": {
       "type": "string",

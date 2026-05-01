@@ -2,7 +2,7 @@
 # - k8s/{{ .Values.CONFIG_GIT_CLUSTERNAME }}.yaml
 # - notification/discord.yaml
 # and derives provider-specific raw file URLs from the repository HEAD/default branch.
-CONFIG_GIT_URL: "https://gitlab.company.com/group/pingpongkong-state"
+CONFIG_GIT_URL: "https://gitlab.company.com/group/pingpongkong-state.git"
 CONFIG_GIT_TOKEN: ""
 CONFIG_GIT_CLUSTERNAME: "default"
 LOG_LEVEL: INFO
@@ -14,7 +14,7 @@ COLLECTOR_API_PORT: 8081
 collector:
   image:
     repository: kimc1992/pingpongkong-k8s-collector
-    tag: v0.0.9
+    tag: v0.0.10
   resources:
     requests:
       cpu: 50m

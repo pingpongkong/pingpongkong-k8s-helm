@@ -4,7 +4,7 @@
 ```bash
 helm lint .
 helm package .
-helm push pingpongkong-0.0.8.tgz \
+helm push pingpongkong-0.0.10.tgz \
   oci://registry-1.docker.io/kimc1992
 ```
 
@@ -23,7 +23,7 @@ helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
   --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
-  --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state" \
+  --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
   --set LOG_LEVEL=DEBUG \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
   --set AGENT_CHECK_INTERVAL=5m \
@@ -36,7 +36,7 @@ helm install ppk ./pingpongkong-k8s-helm \
   --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
-  --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state" \
+  --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
   --set LOG_LEVEL=DEBUG \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
   --set AGENT_CHECK_INTERVAL=5m \
@@ -49,7 +49,7 @@ helm upgrade --install ppk . \
   --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
-  --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state" \
+  --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
   --set LOG_LEVEL=DEBUG \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
   --set AGENT_CHECK_INTERVAL=5m \
@@ -59,7 +59,7 @@ helm upgrade --install ppk . \
 
 The collector creates and patches the ping-state ConfigMap in the release
 namespace. The chart grants the agent ServiceAccount permission to get/list/watch
-ConfigMaps, and grants the collector ServiceAccount permission to get/patch
+ConfigMaps, and grants the collector ServiceAccount permission to get/create/patch
 ConfigMaps in that namespace. `K8S_NAMESPACE` is injected from the pod namespace
 by Kubernetes.
 
