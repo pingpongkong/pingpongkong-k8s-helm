@@ -19,12 +19,12 @@ kubectl config current-context
 
 ```bash
 helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
-  --version 0.0.8 \
+  --version 0.0.16 \
   --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
-  --set LOG_LEVEL=DEBUG \
+  --set LOG_LEVEL=INFO \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
   --set AGENT_CHECK_INTERVAL=5m \
   --set AGENT_API_PORT=8080 \
