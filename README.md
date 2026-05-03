@@ -70,6 +70,10 @@ Nodes. `K8S_NAMESPACE` is injected from the pod namespace by Kubernetes.
 
 These chart values are rendered as runtime environment variables with the same names:
 
+`REPORT_NOTIFICATION_MODE` controls periodic connectivity report notifications and defaults to
+`ALWAYS`. Use `NON_HEALTHY` to notify only when the aggregate report health is not
+`Healthy`.
+
 | Helm value / environment variable | Allowed/example values | Default |
 | --- | --- | --- |
 | `CONFIG_GIT_CLUSTERNAME` | Git config directory/file stem, for example `h100-cluster` | `sample-cluster` |
