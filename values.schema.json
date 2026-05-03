@@ -3,7 +3,7 @@
   "title": "pingpongkong Helm values",
   "type": "object",
   "additionalProperties": false,
-  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_TOKEN", "CONFIG_GIT_CLUSTERNAME", "LOG_LEVEL", "COLLECTOR_UPDATE_INTERVAL", "AGENT_CHECK_INTERVAL", "AGENT_API_PORT", "COLLECTOR_API_PORT", "collector", "agent"],
+  "required": ["CONFIG_GIT_URL", "CONFIG_GIT_TOKEN", "CONFIG_GIT_CLUSTERNAME", "LOG_LEVEL", "COLLECTOR_UPDATE_INTERVAL", "REPORT_NOTIFICATION_MODE", "AGENT_CHECK_INTERVAL", "AGENT_API_PORT", "COLLECTOR_API_PORT", "collector", "agent"],
   "properties": {
     "nameOverride": {
       "type": "string"
@@ -34,6 +34,11 @@
       "description": "Log level used by the collector and agent."
     },
     "COLLECTOR_UPDATE_INTERVAL": { "$ref": "#/definitions/duration" },
+    "REPORT_NOTIFICATION_MODE": {
+      "type": "string",
+      "enum": ["ALWAYS", "NON_HEALTHY"],
+      "description": "Periodic connectivity report notification mode. Use ALWAYS to notify for every report or NON_HEALTHY to notify only when aggregate report health is not Healthy."
+    },
     "AGENT_CHECK_INTERVAL": { "$ref": "#/definitions/duration" },
     "AGENT_API_PORT": { "$ref": "#/definitions/port" },
     "COLLECTOR_API_PORT": { "$ref": "#/definitions/port" },

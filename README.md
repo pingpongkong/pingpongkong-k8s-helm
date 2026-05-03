@@ -4,7 +4,7 @@
 ```bash
 helm lint .
 helm package .
-helm push pingpongkong-0.0.16.tgz \
+helm push pingpongkong-0.0.17.tgz \
   oci://registry-1.docker.io/kimc1992
 ```
 
@@ -19,13 +19,14 @@ kubectl config current-context
 
 ```bash
 helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
-  --version 0.0.16 \
-  --namespace pingpongkong --create-namespace \
+  --version 0.0.17 \
+  --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
   --set LOG_LEVEL=INFO \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
+  --set REPORT_NOTIFICATION_MODE=ALWAYS \
   --set AGENT_CHECK_INTERVAL=5m \
   --set AGENT_API_PORT=8080 \
   --set COLLECTOR_API_PORT=8081
@@ -33,12 +34,13 @@ helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
 
 ```
 helm install ppk ./pingpongkong-k8s-helm \
-  --namespace pingpongkong --create-namespace \
+  --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
   --set LOG_LEVEL=DEBUG \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
+  --set REPORT_NOTIFICATION_MODE=ALWAYS \
   --set AGENT_CHECK_INTERVAL=5m \
   --set AGENT_API_PORT=8080 \
   --set COLLECTOR_API_PORT=8081
@@ -46,12 +48,13 @@ helm install ppk ./pingpongkong-k8s-helm \
 
 ```bash
 helm upgrade --install ppk . \
-  --namespace pingpongkong --create-namespace \
+  --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
   --set LOG_LEVEL=DEBUG \
   --set COLLECTOR_UPDATE_INTERVAL=5m \
+  --set REPORT_NOTIFICATION_MODE=ALWAYS \
   --set AGENT_CHECK_INTERVAL=5m \
   --set AGENT_API_PORT=8080 \
   --set COLLECTOR_API_PORT=8081
@@ -72,6 +75,7 @@ These chart values are rendered as runtime environment variables with the same n
 | `CONFIG_GIT_CLUSTERNAME` | Git config directory/file stem, for example `h100-cluster` | `sample-cluster` |
 | `LOG_LEVEL` | `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` | `INFO` |
 | `COLLECTOR_UPDATE_INTERVAL` | `30s`, `5m`, `1h` | `5m` |
+| `REPORT_NOTIFICATION_MODE` | `ALWAYS`, `NON_HEALTHY` | `ALWAYS` |
 | `AGENT_CHECK_INTERVAL` | `30s`, `5m`, `1h` | `5m` |
 | `AGENT_API_PORT` | port number, for example `8080` | `8080` |
 | `COLLECTOR_API_PORT` | port number, for example `8081` | `8081` |
@@ -80,6 +84,7 @@ These chart values are rendered as runtime environment variables with the same n
 CONFIG_GIT_CLUSTERNAME: sample-cluster
 LOG_LEVEL: INFO # TRACE, DEBUG, INFO, WARN, ERROR
 COLLECTOR_UPDATE_INTERVAL: 5m
+REPORT_NOTIFICATION_MODE: ALWAYS # ALWAYS, NON_HEALTHY
 AGENT_CHECK_INTERVAL: 5m
 AGENT_API_PORT: 8080
 COLLECTOR_API_PORT: 8081

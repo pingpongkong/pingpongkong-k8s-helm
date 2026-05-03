@@ -54,6 +54,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: COLLECTOR_UPDATE_INTERVAL
               value: {{ .Values.COLLECTOR_UPDATE_INTERVAL | quote }}
+            - name: REPORT_NOTIFICATION_MODE
+              value: {{ .Values.REPORT_NOTIFICATION_MODE | quote }}
             - name: AGENT_CHECK_INTERVAL
               value: {{ .Values.AGENT_CHECK_INTERVAL | quote }}
             - name: AGENT_API_PORT
