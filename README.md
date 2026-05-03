@@ -20,7 +20,7 @@ kubectl config current-context
 ```bash
 helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
   --version 0.0.16 \
-  --namespace pingpongkong-system --create-namespace \
+  --namespace pingpongkong --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
@@ -33,7 +33,7 @@ helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
 
 ```
 helm install ppk ./pingpongkong-k8s-helm \
-  --namespace pingpongkong-system --create-namespace \
+  --namespace pingpongkong --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
@@ -46,7 +46,7 @@ helm install ppk ./pingpongkong-k8s-helm \
 
 ```bash
 helm upgrade --install ppk . \
-  --namespace pingpongkong-system --create-namespace \
+  --namespace pingpongkong --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
   --set CONFIG_GIT_URL="https://gitlab.company.com/group/pingpongkong-state.git" \
