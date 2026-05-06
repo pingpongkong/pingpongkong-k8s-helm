@@ -4,7 +4,7 @@
 ```bash
 helm lint .
 helm package .
-helm push pingpongkong-0.0.17.tgz \
+helm push pingpongkong-0.0.18.tgz \
   oci://registry-1.docker.io/kimc1992
 ```
 
@@ -19,7 +19,7 @@ kubectl config current-context
 
 ```bash
 helm install ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
-  --version 0.0.17 \
+  --version 0.0.18 \
   --namespace pingpongkong-system --create-namespace \
   --set CONFIG_GIT_TOKEN="glpat-YOUR_REAL_SECRET_TOKEN" \
   --set CONFIG_GIT_CLUSTERNAME="h100-cluster" \
