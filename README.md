@@ -93,3 +93,13 @@ AGENT_CHECK_INTERVAL: 5m
 AGENT_API_PORT: 8080
 COLLECTOR_API_PORT: 8081
 ```
+
+
+
+```
+helm upgrade ppk oci://registry-1.docker.io/kimc1992/pingpongkong \
+  --version 0.0.20 \
+  -n pingpongkong \
+  --reuse-values \
+  --set-string REPORT_NOTIFICATION_MODE=NON_HEALTHY
+```
